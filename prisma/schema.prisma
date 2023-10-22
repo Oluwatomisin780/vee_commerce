@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int        @id @default(autoincrement())
+  lastName       String
+  firstName      String
+  email          String     @unique
+  password       String
+  shipAddress    String
+  billingAddress String
+  refreshToken   String?
+  review         Review[]
+  wishList       WishList[]
+  order          Order[]
+}
+
+model Product {
+  id          Int         @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  image       String //change to file upload later
+  quantity    Int
+  category    Category?
+  review      Review[]
+  wishList    WishList[]
+  orderItem   OrderItem[]
+}
+
+model Category {
+  id        Int     @id @default(autoincrement())
+  name      String
+  productId Int     @unique
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  rating    Int
+  comment   String
+  date      DateTime @default(now())
+}
+
+model Order {
+  id          Int         @id @default(autoincrement())
+  userId      Int
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orderDate   DateTime    @default(now())
+  TotalAmount Float
+  status      String //change to enum when using postgres
+  items       OrderItem[]
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  subtotal  Int
+  Quantity  Int
+  orderId   Int
+  productId Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+model WishList {
+  id       Int       @id
+  products Product[]
+  userId   Int
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
+}
