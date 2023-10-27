@@ -67,6 +67,7 @@ export class UserService {
     return tokens;
   }
   async getTokens(userId: number, email: string) {
+    const expirationTime = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 365;
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         {
@@ -75,7 +76,7 @@ export class UserService {
         },
         {
           secret: 'secrets',
-          expiresIn: '30m',
+          expiresIn: expirationTime,
         },
       ),
       this.jwtService.signAsync(
@@ -85,7 +86,7 @@ export class UserService {
         },
         {
           secret: 'secrets',
-          expiresIn: '7d',
+          expiresIn: expirationTime,
         },
       ),
     ]);
