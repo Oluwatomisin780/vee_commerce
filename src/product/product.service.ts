@@ -1,6 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateProductDto, UpdateProductDto } from './productDto/product.dto';
+import {
+  CreateProductDto,
+  UpdateProductDto,
+  createCategoryDto,
+} from './productDto/product.dto';
 import { ApiProperty } from '@nestjs/swagger';
 //import { UploadApiErrorResponse, UploadApiResponse, v2 } from 'cloudinary';
 
@@ -11,14 +15,23 @@ export class ProductService {
 
   //findallProduct
   async findAllProduct() {
-    return this.prismaService.product.findMany();
+    return this.prismaService.product.findMany({
+      include: {
+        category: true,
+      },
+    });
   }
-
+  async getCategory() {
+    return this.prismaService.category.findMany();
+  }
   // createProducts
   async createProduct(createProduct: CreateProductDto) {
     const createdProduct = await this.prismaService.product.create({
       data: {
         ...createProduct,
+      },
+      include: {
+        category: true,
       },
     });
     return createdProduct;
@@ -47,6 +60,9 @@ export class ProductService {
       where: {
         id,
       },
+      include: {
+        category: true,
+      },
     });
     if (!getSingleProd) throw new NotFoundException('');
 
@@ -64,5 +80,19 @@ export class ProductService {
     if (!checkId) throw new NotFoundException('product does not exist');
     await this.prismaService.product.delete({ where: { id } });
   }
-  //file uplaod
+  //category
+  async createCategory(createCategory: createCategoryDto) {
+    const category = await this.prismaService.category.create({
+      data: {
+        ...createCategory,
+      },
+    });
+    return category;
+  }
+  //get_cate
+
+  //delete_category
+  async delete_category(id: number) {
+    return this.prismaService.category.delete({ where: { id } });
+  }
 }

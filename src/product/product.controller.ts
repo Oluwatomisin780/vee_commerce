@@ -10,7 +10,11 @@ import {
   UploadedFile,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { CreateProductDto, UpdateProductDto } from './productDto/product.dto';
+import {
+  CreateProductDto,
+  UpdateProductDto,
+  createCategoryDto,
+} from './productDto/product.dto';
 @Controller('product')
 export class ProductController {
   constructor(private productService: ProductService) {}
@@ -20,7 +24,14 @@ export class ProductController {
   getAllProduct() {
     return this.productService.findAllProduct();
   }
-
+  @Get('category')
+  getCategory() {
+    return this.productService.getCategory();
+  }
+  @Post()
+  createProduct(@Body() createProductDto: CreateProductDto) {
+    return this.productService.createProduct(createProductDto);
+  }
   //getSingleProduct
   @Get('/:id')
   getSingleproduct(@Param('id') id: string) {
@@ -41,10 +52,17 @@ export class ProductController {
   deleteProduct(@Param('id', ParseIntPipe) id: number) {
     return this.productService.deleteproduct(id);
   }
-
-  //createProduct
-  @Post()
-  createProduct(@Body() createProductDto: CreateProductDto) {
-    return this.productService.createProduct(createProductDto);
+  @Delete('/category/:id')
+  deleteCategory(@Param('id') id: string) {
+    return this.productService.delete_category(parseInt(id));
   }
+  //createProduct
+
+  //createCate
+  @Post('category')
+  createCategory(@Body() createCate: createCategoryDto) {
+    return this.productService.createCategory(createCate);
+  }
+
+  //getCate
 }
