@@ -21,6 +21,15 @@ export class ProductService {
       },
     });
   }
+  async findproductByCate(category: string) {
+    return this.prismaService.product.findMany({
+      where: {
+        category: {
+          name: category,
+        },
+      },
+    });
+  }
   async getCategory() {
     return this.prismaService.category.findMany();
   }

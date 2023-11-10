@@ -31,7 +31,7 @@ model Product {
   price       Float
   image       String //change to file upload later
   quantity    Int
-  categoryId  Int @unique
+  categoryId  Int 
   category    Category @relation(fields: [categoryId],references: [id], onDelete: Cascade, onUpdate: Cascade)
   review      Review[]
   wishList    WishList[]
@@ -41,7 +41,7 @@ model Product {
 model Category {
   id        Int     @id @default(autoincrement())
   name      String
-  product   Product?
+  product   Product []
 }
 
 model Review {

@@ -8,6 +8,7 @@ import {
   Patch,
   Delete,
   UploadedFile,
+  Query,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import {
@@ -15,6 +16,7 @@ import {
   UpdateProductDto,
   createCategoryDto,
 } from './productDto/product.dto';
+
 @Controller('product')
 export class ProductController {
   constructor(private productService: ProductService) {}
@@ -23,6 +25,10 @@ export class ProductController {
   @Get()
   getAllProduct() {
     return this.productService.findAllProduct();
+  }
+  @Get('category/product')
+  getProductByCategory(@Query('category') category: string) {
+    return this.productService.findproductByCate(category);
   }
   @Get('category')
   getCategory() {
