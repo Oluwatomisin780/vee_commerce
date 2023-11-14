@@ -116,4 +116,16 @@ export class UserService {
       },
     });
   }
+  //find user by email
+  async getUserNameByEmail(email: string) {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    if (!user) throw new NotFoundException('Email does not exist');
+    return {
+      username: user.firstName + user.lastName,
+    };
+  }
 }
