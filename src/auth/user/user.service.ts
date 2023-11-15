@@ -125,7 +125,7 @@ export class UserService {
     });
     if (!user) throw new NotFoundException('Email does not exist');
     return {
-      username: user.firstName + user.lastName,
+      username: user.firstName +" "+user.lastName,
     };
   }
 }

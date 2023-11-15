@@ -25,7 +25,7 @@ export class LoginUserDto {
   @IsEmail()
   @ApiProperty()
   email: string;
-  @Min(6, { message: 'password must not be less than 6' })
+  @IsNotEmpty()
   @ApiProperty()
   password: string;
 }
