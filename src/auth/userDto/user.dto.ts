@@ -13,12 +13,6 @@ export class CreateUserDto {
   @IsNotEmpty()
   @ApiProperty()
   password: string;
-  @IsString()
-  @ApiProperty()
-  shipAddress: string;
-  @IsString()
-  @ApiProperty()
-  billingAddress: string;
 }
 
 export class LoginUserDto {
@@ -28,4 +22,13 @@ export class LoginUserDto {
   @IsNotEmpty()
   @ApiProperty()
   password: string;
+}
+
+export class ProfileDto {
+  @IsString()
+  @ApiProperty()
+  shipAddress: string;
+  @IsString()
+  @ApiProperty()
+  billingAddress: string;
 }

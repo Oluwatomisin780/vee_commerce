@@ -11,17 +11,24 @@ datasource db {
 }
 
 model User {
-  id             Int        @id @default(autoincrement())
-  lastName       String
-  firstName      String
-  email          String     @unique
-  password       String
+  id           Int        @id @default(autoincrement())
+  lastName     String
+  firstName    String
+  email        String     @unique
+  password     String
+  refreshToken String?
+  profile      Profile?
+  review       Review[]
+  wishList     WishList[]
+  order        Order[]
+}
+
+model Profile {
+  id             Int    @id @default(autoincrement())
   shipAddress    String
   billingAddress String
-  refreshToken   String?
-  review         Review[]
-  wishList       WishList[]
-  order          Order[]
+  userID         Int    @unique
+  user           User   @relation(fields: [userID], references: [id])
 }
 
 model Product {
@@ -31,17 +38,17 @@ model Product {
   price       Float
   image       String //change to file upload later
   quantity    Int
-  categoryId  Int 
-  category    Category @relation(fields: [categoryId],references: [id], onDelete: Cascade, onUpdate: Cascade)
+  categoryId  Int
+  category    Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   review      Review[]
   wishList    WishList[]
   orderItem   OrderItem[]
 }
 
 model Category {
-  id        Int     @id @default(autoincrement())
-  name      String
-  product   Product []
+  id      Int       @id @default(autoincrement())
+  name    String
+  product Product[]
 }
 
 model Review {

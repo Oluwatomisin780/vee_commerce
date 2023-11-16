@@ -38,8 +38,6 @@ export class UserService {
   async signUpUser({
     firstName,
     lastName,
-    shipAddress,
-    billingAddress,
     email,
     password,
   }: CreateUserDto): Promise<any> {
@@ -55,8 +53,6 @@ export class UserService {
       data: {
         firstName: firstName,
         lastName: lastName,
-        shipAddress: shipAddress,
-        billingAddress: billingAddress,
         email: email,
         password: hashPassword,
       },
@@ -125,7 +121,7 @@ export class UserService {
     });
     if (!user) throw new NotFoundException('Email does not exist');
     return {
-      username: user.firstName +" "+user.lastName,
+      username: user.firstName + '  ' + user.lastName,
     };
   }
 }

@@ -5,11 +5,19 @@ CREATE TABLE "User" (
     "firstName" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "shipAddress" TEXT NOT NULL,
-    "billingAddress" TEXT NOT NULL,
     "refreshToken" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Profile" (
+    "id" SERIAL NOT NULL,
+    "shipAddress" TEXT NOT NULL,
+    "billingAddress" TEXT NOT NULL,
+    "userID" INTEGER NOT NULL,
+
+    CONSTRAINT "Profile_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -20,6 +28,7 @@ CREATE TABLE "Product" (
     "price" DOUBLE PRECISION NOT NULL,
     "image" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
+    "categoryId" INTEGER NOT NULL,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );
@@ -28,7 +37,6 @@ CREATE TABLE "Product" (
 CREATE TABLE "Category" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "productId" INTEGER NOT NULL,
 
     CONSTRAINT "Category_pkey" PRIMARY KEY ("id")
 );
@@ -85,7 +93,7 @@ CREATE TABLE "_ProductToWishList" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Category_productId_key" ON "Category"("productId");
+CREATE UNIQUE INDEX "Profile_userID_key" ON "Profile"("userID");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "WishList_userId_key" ON "WishList"("userId");
@@ -97,7 +105,10 @@ CREATE UNIQUE INDEX "_ProductToWishList_AB_unique" ON "_ProductToWishList"("A", 
 CREATE INDEX "_ProductToWishList_B_index" ON "_ProductToWishList"("B");
 
 -- AddForeignKey
-ALTER TABLE "Category" ADD CONSTRAINT "Category_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Profile" ADD CONSTRAINT "Profile_userID_fkey" FOREIGN KEY ("userID") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Product" ADD CONSTRAINT "Product_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Review" ADD CONSTRAINT "Review_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
