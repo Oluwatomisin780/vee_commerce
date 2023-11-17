@@ -7,7 +7,6 @@ import {
   ParseIntPipe,
   Patch,
   Delete,
-  UploadedFile,
   Query,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
@@ -27,8 +26,8 @@ export class ProductController {
     return this.productService.findAllProduct();
   }
   @Get('category/product')
-  getProductByCategory(@Query('category') category: string) {
-    return this.productService.findproductByCate(category);
+  getProductByCategory(@Query('categoryId', ParseIntPipe) categoryId: number) {
+    return this.productService.findproductByCate(categoryId);
   }
   @Get('category')
   getCategory() {

@@ -21,11 +21,12 @@ export class ProductService {
       },
     });
   }
-  async findproductByCate(category: string) {
+  async findproductByCate(categoryId: number) {
     return this.prismaService.product.findMany({
       where: {
         category: {
-          name: category,
+          id: categoryId,
+          //name: category,
         },
       },
     });
