@@ -2,7 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Prisma } from '@prisma/client';
 
 export class wishListDto {
+  @ApiProperty()
   products: Product[];
+  @ApiProperty()
   userId: number;
 }
 
