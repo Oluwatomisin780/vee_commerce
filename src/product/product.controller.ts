@@ -15,6 +15,7 @@ import {
   UpdateProductDto,
   createCategoryDto,
 } from './productDto/product.dto';
+import { wishListDto } from './productDto/wishList.dto';
 
 @Controller('product')
 export class ProductController {
@@ -69,5 +70,9 @@ export class ProductController {
     return this.productService.createCategory(createCate);
   }
 
-  //getCate
+  //wishlist
+  @Post('wishlist')
+  createWishList(@Body() wishlist: wishListDto) {
+    return this.productService.wishlist(wishlist);
+  }
 }

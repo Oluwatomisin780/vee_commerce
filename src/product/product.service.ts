@@ -9,6 +9,7 @@ import { ApiProperty } from '@nestjs/swagger';
 //import { UploadApiErrorResponse, UploadApiResponse, v2 } from 'cloudinary';
 
 import toStream = require('buffer-to-stream');
+import { wishListDto } from './productDto/wishList.dto';
 @Injectable()
 export class ProductService {
   constructor(private prismaService: PrismaService) {}
@@ -104,5 +105,28 @@ export class ProductService {
   //delete_category
   async delete_category(id: number) {
     return this.prismaService.category.delete({ where: { id } });
+  }
+  async checkifProductsExist(productIds: number[]) {
+    return this.prismaService.product.findMany({
+      where: {
+        id: { in: productIds },
+      },
+    });
+  }
+
+  // wishlist
+  async wishlist(wishList: wishListDto) {
+    //
+    return this.prismaService.wishList.create({
+      data: {
+        userId: 1,
+        products: {
+          create: wishList.products,
+        },
+      },
+      include: {
+        products: true,
+      },
+    });
   }
 }

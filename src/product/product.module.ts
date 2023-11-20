@@ -3,11 +3,10 @@ import { ProductService } from './product.service';
 import { ProductController } from './product.controller';
 import { PrismaModule } from '../prisma/prisma.module';
 
-import { CloudinaryModule } from '../cloundinary/cloundinary.module';
-
 @Module({
-  imports: [PrismaModule, CloudinaryModule],
+  imports: [PrismaModule],
   providers: [ProductService],
   controllers: [ProductController],
+  exports: [ProductService],
 })
 export class ProductModule {}
